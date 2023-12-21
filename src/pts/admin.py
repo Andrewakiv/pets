@@ -3,12 +3,31 @@ from django.contrib import admin, messages
 from .models import Pts, Category, Passport, TagPost
 
 
+class PassportFilter(admin.SimpleListFilter):
+    title = 'Passport status'
+    parameter_name = 'status'
+
+    def lookups(self, request, model_admin):
+        return [
+            ('available', 'available'),
+            ('not_available', 'not available')
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == 'available':
+            return queryset.filter(passport__isnull=False)
+        elif self.value() == 'not_available':
+            return queryset.filter(passport__isnull=True)
+
+
 @admin.register(Pts)
 class PtsAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'content', 'publish_date', 'updated_date', 'is_published', 'category']
     list_display_links = ['id', 'title']
     ordering = ['-publish_date', 'title']
     actions = ['set_to_published', 'set_to_draft']
+    search_fields = ['is_published', 'category__name']
+    list_filter = [PassportFilter, 'is_published', 'category__name']
     # list_editable = ('is_published',)
 
     @admin.action(description='Set status to Published')
