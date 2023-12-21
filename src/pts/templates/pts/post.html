@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% if tags %}
+    <p>Tags:</p>
+    <ul class="tags-list">
+        {% for tag in tags %}
+        <li><a href="{{ tag.get_absolute_url }}">{{ tag.tag }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <h1>{{ post.title }}</h1>
     <p>{{ post.content }}</p>
 {% endblock %}

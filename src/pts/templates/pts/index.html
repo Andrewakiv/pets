@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<ul class="list-articles">
     {% for post in posts %}
-<!--    <h2><a href="{% url 'pts:list_view' post.slug %}">{{ post.title }}</a></h2>-->
-    <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
-    <p>{{ post.content }}</p>
+    <li>
+        <div class="article-panel">
+            <p class="first">Category: {{ post.category.name }}</p>
+            <p class="last">Published: {{ post.updated_date }}</p>
+        </div>
+        <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+        <p>{{ post.content }}</p>
+    </li>
     {% endfor %}
+</ul>
 {% endblock %}

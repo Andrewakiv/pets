@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 
-from .models import Pts
+from .models import Pts, Category, TagPost
 
 menu = [
     {'title': "About", 'url_name': 'pts:about'},
@@ -11,7 +11,7 @@ menu = [
 
 
 def home(request):
-    posts = Pts.published.all()
+    posts = Pts.published.all().select_related('category')
     data = {
         'posts': posts,
         'title': 'Home',
@@ -21,15 +21,41 @@ def home(request):
     return render(request, 'pts/index.html', context=data)
 
 
-def list_view(request, post_slug):
+def post_view(request, post_slug):
     post = get_object_or_404(Pts, slug=post_slug)
+    tags = post.tags.all()
     data = {
         'post': post,
+        'tags': tags,
         'title': post.title,
         'menu': menu,
         'cat_selected': 0
     }
     return render(request, 'pts/post.html', context=data)
+
+
+def category_view(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug)
+    posts = Pts.published.filter(category_id=category.pk).select_related('category')
+    data = {
+        'posts': posts,
+        'title': category.name,
+        'menu': menu,
+        'cat_selected': category.id
+    }
+    return render(request, 'pts/index.html', context=data)
+
+
+def tag_view(request, tag_slug):
+    tag = get_object_or_404(TagPost, slug=tag_slug)
+    posts = tag.tags.filter(is_published=Pts.Status.PUBLISHED).select_related('category')  # tags = ...(related_name=tags)
+    data = {
+        'posts': posts,
+        'title': tag.tag,
+        'menu': menu,
+        'cat_selected': None
+    }
+    return render(request, 'pts/index.html', context=data)
 
 
 def about(request):

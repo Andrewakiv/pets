@@ -1,4 +1,5 @@
 {% load static %}
+{% load pts_tags %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,13 +32,12 @@
 	<td valign="top" class="left-chapters">
 	<ul id="leftchapters">
 		<li class="selected">Все категории</li>
-		<li><a href="#">Актрисы</a></li>
-		<li><a href="#">Певицы</a></li>
-		<li><a href="#">Спортсменки</a></li>
+		{% categories_tag cat_selected %}
 		<li class="share">
 		<p>Наш канал</p>
 		<a class="share-yt" href="https://www.youtube.com/channel/UClJzWfGWuGJL2t-3dYKcHTA/playlists" target="_blank" rel="nofollow"></a>
 		</li>
+		<li>{% tags_tag %}</li>
 	</ul>
 </td>
 <!-- Конец Sidebar'а -->
