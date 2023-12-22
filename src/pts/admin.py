@@ -1,4 +1,5 @@
 from django.contrib import admin, messages
+from django.utils.safestring import mark_safe
 
 from .models import Pts, Category, Passport, TagPost
 
@@ -22,12 +23,14 @@ class PassportFilter(admin.SimpleListFilter):
 
 @admin.register(Pts)
 class PtsAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'content', 'publish_date', 'updated_date', 'is_published', 'category']
+    list_display = ['id', 'title', 'post_photo', 'publish_date', 'updated_date', 'is_published', 'category']
     list_display_links = ['id', 'title']
+    prepopulated_fields = {'slug': ('title', )}
     ordering = ['-publish_date', 'title']
     actions = ['set_to_published', 'set_to_draft']
     search_fields = ['is_published', 'category__name']
     list_filter = [PassportFilter, 'is_published', 'category__name']
+    readonly_fields = ['post_photo']
     # list_editable = ('is_published',)
 
     @admin.action(description='Set status to Published')
@@ -40,6 +43,12 @@ class PtsAdmin(admin.ModelAdmin):
         count = queryset.update(is_published=Pts.Status.DRAFT)
         self.message_user(request, f'Have been changed status of {count} posts to NotPublished',
                           messages.WARNING)
+
+    @admin.display(description='Photo')
+    def post_photo(self, pts: Pts):
+        if pts.photo:
+            return mark_safe(f'<img  src="{ pts.photo.url }" width=50>')
+        return 'Have no photo'
 
 
 @admin.register(Category)

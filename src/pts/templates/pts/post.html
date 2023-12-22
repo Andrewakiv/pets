@@ -10,5 +10,8 @@
     </ul>
     {% endif %}
     <h1>{{ post.title }}</h1>
+{% if post.photo %}
+<p><img class="img-article-left" src="{{ post.photo.url }}"></p>
+{% endif %}
     <p>{{ post.content }}</p>
 {% endblock %}

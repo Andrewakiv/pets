@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
+from .forms import AddPostForm
 from .models import Pts, Category, TagPost
 
 menu = [
@@ -67,11 +68,20 @@ def about(request):
 
 
 def add_page(request):
+    if request.method == 'POST':
+        form = AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = AddPostForm()
+
     data = {
         'title': 'Add page',
         'menu': menu,
+        'form': form
     }
-    return render(request, 'pts/index.html', context=data)
+    return render(request, 'pts/add_page.html', context=data)
 
 
 def contact(request):

@@ -14,6 +14,7 @@ class Pts(models.Model):
     title = models.CharField(max_length=225)
     slug = models.SlugField(max_length=225, unique=True, db_index=True)
     content = models.TextField(blank=True)
+    photo = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True, null=True, default=None)
     publish_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(choices=Status.choices, default=Status.PUBLISHED)

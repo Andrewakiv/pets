@@ -8,8 +8,12 @@
             <p class="first">Category: {{ post.category.name }}</p>
             <p class="last">Published: {{ post.updated_date }}</p>
         </div>
+        {% if post.photo %}
+        <p><img class="img-article-left thumb" src="{{ post.photo.url }}"></p>
+        {% endif %}
         <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
         <p>{{ post.content }}</p>
+        <div class="clear"></div>
     </li>
     {% endfor %}
 </ul>
