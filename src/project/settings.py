@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'accounts.context_processors.get_mainmenu',
             ],
         },
     },
@@ -133,3 +134,9 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGIN_REDIRECT_URL = 'pts:home'  # to redirect after authorization
+LOGOUT_REDIRECT_URL = 'pts:home'
+LOGIN_URL = 'accounts:login_view'  # for login_required
+

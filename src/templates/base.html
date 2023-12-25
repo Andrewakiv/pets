@@ -16,10 +16,21 @@
 		<div class="header">
 			<ul id="mainmenu" class="mainmenu">
 			<li class="logo"><a href="{% url 'pts:home' %}"><div class="logo"></div></a></li>
-{% for m in menu %}
-	{% if not forloop.last %}<li>{% else %}<li class="last">{% endif %}
-		<a href="{% url m.url_name%}">{{m.title}}</a></li>
+{% for m in mainmenu %}
+	<li><a href="{% url m.url_name%}">{{m.title}}</a></li>
 {% endfor %}
+{% if user.is_authenticated %}
+	<li class="last">{{ user.username }}
+		<form id="logout-form" method="post" action="{% url 'accounts:logout_view' %}">
+			{% csrf_token %}
+			<button type="submit">logout</button>
+		</form>
+	</li>
+{% else %}
+	<li class="last">
+		<a href="{% url 'accounts:login_view' %}">Login</a> | <a href="#">Register</a>
+	</li>
+{% endif %}
 			</ul>
 			<div class="clear"></div>
 		</div>

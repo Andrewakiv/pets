@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, FormView, UpdateView
@@ -5,12 +7,12 @@ from django.views.generic import TemplateView, ListView, DetailView, FormView, U
 from .forms import AddPostForm
 from .models import Pts, Category, TagPost
 
-menu = [
-    {'title': "About", 'url_name': 'pts:about'},
-    {'title': "Add page", 'url_name': 'pts:add_page'},
-    {'title': "Contact", 'url_name': 'pts:contact'},
-    {'title': "Login", 'url_name': 'pts:login'}
-]
+# menu = [
+#     {'title': "About", 'url_name': 'pts:about'},
+#     {'title': "Add page", 'url_name': 'pts:add_page'},
+#     {'title': "Contact", 'url_name': 'pts:contact'},
+#     {'title': "Login", 'url_name': 'pts:login'}
+# ]
 
 
 # def home(request):
@@ -35,7 +37,7 @@ class HomeListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Home'
-        context['menu'] = menu
+        # context['menu'] = menu
         context['cat_selected'] = 0
         return context
 
@@ -73,7 +75,7 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = context['post'].title
-        context['menu'] = menu
+        # context['menu'] = menu
         context['cat_selected'] = None
         return context
 
@@ -108,7 +110,7 @@ class CategoryListView(ListView):
         context = super().get_context_data(**kwargs)
         category = context['posts'].first().category  # from queryset first item then its category
         context['title'] = 'Category - '+category.name  # name from category
-        context['menu'] = menu
+        # context['menu'] = menu
         context['cat_selected'] = category.pk  # id from category
         return context
 
@@ -140,7 +142,7 @@ class TagListView(ListView):
         context = super().get_context_data(**kwargs)
         tag = get_object_or_404(TagPost, slug=self.kwargs['tag_slug'])
         context['title'] = tag.tag
-        context['menu'] = menu
+        # context['menu'] = menu
         context['cat_selected'] = None
         return context
 
@@ -148,7 +150,7 @@ class TagListView(ListView):
 def about(request):
     data = {
         'title': 'About',
-        'menu': menu,
+        # 'menu': menu,
     }
     return render(request, 'pts/index.html', context=data)
 
@@ -169,8 +171,7 @@ def about(request):
 #     }
 #     return render(request, 'pts/add_page.html', context=data)
 
-
-class AddPageView(FormView):
+class AddPageView(LoginRequiredMixin, FormView):
     template_name = "pts/add_page.html"
     form_class = AddPostForm
     success_url = reverse_lazy('pts:home')
@@ -183,7 +184,7 @@ class AddPageView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Add page'
-        context['menu'] = menu
+        # context['menu'] = menu
         return context
 
 
@@ -196,21 +197,21 @@ class PostUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Edit page'
-        context['menu'] = menu
+        # context['menu'] = menu
         return context
 
 
 def contact(request):
     data = {
         'title': 'Contact',
-        'menu': menu,
+        # 'menu': menu,
     }
     return render(request, 'pts/index.html', context=data)
 
 
-def login(request):
-    data = {
-        'title': 'Login',
-        'menu': menu,
-    }
-    return render(request, 'pts/index.html', context=data)
+# def login(request):
+#     data = {
+#         'title': 'Login',
+#         # 'menu': menu,
+#     }
+#     return render(request, 'pts/index.html', context=data)
