@@ -140,3 +140,7 @@ LOGIN_REDIRECT_URL = 'pts:home'  # to redirect after authorization
 LOGOUT_REDIRECT_URL = 'pts:home'
 LOGIN_URL = 'accounts:login_view'  # for login_required
 
+AUTHENTICATION_BACKENDS = [
+    'accounts.authentication.EmailAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]

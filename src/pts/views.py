@@ -178,6 +178,8 @@ class AddPageView(LoginRequiredMixin, FormView):
 
     # we can realize the same without via CreateView
     def form_valid(self, form):
+        pet = form.save(commit=False)
+        pet.author = self.request.user
         form.save()
         return super().form_valid(form)
 

@@ -5,7 +5,10 @@
     {% for post in posts %}
     <li>
         <div class="article-panel">
-            <p class="first">Category: {{ post.category.name }}</p>
+            <p class="first">
+                Category: {{ post.category.name }}
+                Author: {{ post.author.username }}
+            </p>
             <p class="last">Published: {{ post.updated_date }}</p>
         </div>
         {% if post.photo %}

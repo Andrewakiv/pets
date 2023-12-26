@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Edit profile</h1>
+<form action="" method="post">
+    <input type="hidden" name="next" value="{{ next }}"/>
+    {{ form.as_p }}
+    {% csrf_token %}
+    <button type="submit">Submit</button>
+</form>
+<hr>
+<p><a href="{% url 'accounts:password_change_view' %}">Change password</a></p>
+{% endblock %}

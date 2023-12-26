@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 
@@ -22,6 +23,8 @@ class Pts(models.Model):
     tags = models.ManyToManyField('TagPost', blank=True, related_name='tags')
     passport = models.OneToOneField('Passport', on_delete=models.SET_NULL, null=True, blank=True,
                                     related_name='pass_id')
+    author = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, default=None,
+                                    related_name='posts')
 
     objects = models.Manager()
     published = PublishedManager()

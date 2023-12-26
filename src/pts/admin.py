@@ -23,7 +23,7 @@ class PassportFilter(admin.SimpleListFilter):
 
 @admin.register(Pts)
 class PtsAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'post_photo', 'publish_date', 'updated_date', 'is_published', 'category']
+    list_display = ['id', 'title', 'post_photo', 'publish_date', 'updated_date', 'is_published', 'category', 'author']
     list_display_links = ['id', 'title']
     prepopulated_fields = {'slug': ('title', )}
     ordering = ['-publish_date', 'title']

@@ -20,7 +20,7 @@
 	<li><a href="{% url m.url_name%}">{{m.title}}</a></li>
 {% endfor %}
 {% if user.is_authenticated %}
-	<li class="last">{{ user.username }}
+	<li class="last"><a href="{% url 'accounts:profile_view' %}">{{ user.username }}</a> |
 		<form id="logout-form" method="post" action="{% url 'accounts:logout_view' %}">
 			{% csrf_token %}
 			<button type="submit">logout</button>
@@ -28,7 +28,7 @@
 	</li>
 {% else %}
 	<li class="last">
-		<a href="{% url 'accounts:login_view' %}">Login</a> | <a href="#">Register</a>
+		<a href="{% url 'accounts:login_view' %}">Login</a> | <a href="{% url 'accounts:register_view' %}">Register</a>
 	</li>
 {% endif %}
 			</ul>
