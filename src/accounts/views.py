@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import UpdateView
 
 from accounts.forms import LoginForm, RegisterForm, ProfileUserForm, UserChangePasswordForm
+from project import settings
 
 
 # def login_view(request):
@@ -58,7 +59,10 @@ def register(request):
 class ProfileUser(LoginRequiredMixin, UpdateView):
     form_class = ProfileUserForm
     template_name = 'accounts/profile.html'
-    extra_context = {'title': 'Edit profile'}
+    extra_context = {
+        'title': 'Edit profile',
+        'default_image': settings.DEFAULT_USER_IMAGE
+    }
 
     def get_success_url(self):
         return reverse_lazy('accounts:profile_view')

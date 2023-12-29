@@ -72,15 +72,16 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
     slug_url_kwarg = 'post_slug'  # from url
 
+    def get_object(self, queryset=None):
+        return get_object_or_404(Pts.published, slug=self.kwargs[self.slug_url_kwarg])
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = context['post'].title
         # context['menu'] = menu
+        context['tags'] = self.get_object().tags.all()
         context['cat_selected'] = None
         return context
-
-    def get_object(self, queryset=None):
-        return get_object_or_404(Pts.published, slug=self.kwargs[self.slug_url_kwarg])
 
 
 # def category_view(request, category_slug):

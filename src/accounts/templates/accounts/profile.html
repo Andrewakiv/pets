@@ -2,8 +2,12 @@
 
 {% block content %}
 <h1>Edit profile</h1>
-<form action="" method="post">
-    <input type="hidden" name="next" value="{{ next }}"/>
+<form action="" method="post" enctype="multipart/form-data">
+    {% if user.photo %}
+    <p class="user__image"><img src="{{ user.photo.url }}"></p>
+    {% else %}
+    <p class="user__image"><img src="{{ default_image }}"></p>
+    {% endif %}
     {{ form.as_p }}
     {% csrf_token %}
     <button type="submit">Submit</button>

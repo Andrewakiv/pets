@@ -55,6 +55,7 @@ class PtsAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
     list_display_links = ['id', 'name']
+    prepopulated_fields = {'slug': ('name',)}
 
 
 admin.site.register(Passport)

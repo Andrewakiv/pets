@@ -419,3 +419,8 @@ ul.lang-list li a:hover {color: #fdc073;}
   font-size: 16px;
   color: #fdc073;
 }
+
+.user__image img {
+    max-width: 300px;
+    max-height: 200px;
+}
