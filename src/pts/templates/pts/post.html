@@ -1,17 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if tags %}
-    <p>Tags:</p>
-    <ul class="tags-list">
-        {% for tag in tags %}
-        <li><a href="{{ tag.get_absolute_url }}">{{ tag.tag }}</a></li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    <h1>{{ post.title }}</h1>
+{% if tags %}
+<p>Tags:</p>
+<ul class="tags-list">
+    {% for tag in tags %}
+    <li><a href="{{ tag.get_absolute_url }}">{{ tag.tag }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if perms.pts.change_Pets %}
+<p><a href="{% url 'pts:edit_view' post.slug %}">Edit post</a></p>
+{% endif %}
+
+<h1>{{ post.title }}</h1>
 {% if post.photo %}
 <p><img class="img-article-left" src="{{ post.photo.url }}"></p>
 {% endif %}
-    <p>{{ post.content }}</p>
+<p>{{ post.content }}</p>
 {% endblock %}

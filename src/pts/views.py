@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, FormView, UpdateView
@@ -172,10 +172,11 @@ def about(request):
 #     }
 #     return render(request, 'pts/add_page.html', context=data)
 
-class AddPageView(LoginRequiredMixin, FormView):
+class AddPageView(PermissionRequiredMixin, LoginRequiredMixin, FormView):
     template_name = "pts/add_page.html"
     form_class = AddPostForm
     success_url = reverse_lazy('pts:home')
+    permission_required = 'pts.add_pets'  # <app>.<action>_<table>
 
     # we can realize the same without via CreateView
     def form_valid(self, form):
@@ -191,11 +192,17 @@ class AddPageView(LoginRequiredMixin, FormView):
         return context
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(PermissionRequiredMixin, UpdateView):
     model = Pts
     fields = ['title', 'content', 'photo', 'is_published', 'category']
     template_name = "pts/add_page.html"
+    context_object_name = 'post'
+    slug_url_kwarg = 'post_slug'
     success_url = reverse_lazy('pts:home')
+    permission_required = 'pts.change_pets'  # <app>.<action>_<table>
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Pts.published, slug=self.kwargs[self.slug_url_kwarg])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
