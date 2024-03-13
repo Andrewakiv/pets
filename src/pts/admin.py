@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 from django.utils.safestring import mark_safe
 
-from .models import Pts, Category, Passport, TagPost
+from .models import Pts, Category, Passport, TagPost, Owner
 
 
 class PassportFilter(admin.SimpleListFilter):
@@ -53,6 +53,13 @@ class PtsAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name']
+    list_display_links = ['id', 'name']
+    prepopulated_fields = {'slug': ('name',)}
+
+
+@admin.register(Owner)
+class OwnerAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
     list_display_links = ['id', 'name']
     prepopulated_fields = {'slug': ('name',)}

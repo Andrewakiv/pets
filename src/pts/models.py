@@ -25,6 +25,8 @@ class Pts(models.Model):
                                     related_name='pass_id')
     author = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, default=None,
                                     related_name='posts')
+    owner = models.ForeignKey('Owner', on_delete=models.CASCADE, null=True, default=None,
+                              related_name='owners')
 
     objects = models.Manager()
     published = PublishedManager()
@@ -75,3 +77,15 @@ class Passport(models.Model):
 
     def __str__(self):
         return str(self.passport_id)
+
+
+class Owner(models.Model):
+    name = models.CharField(max_length=225, db_index=True)
+    slug = models.SlugField(max_length=225, db_index=True, unique=True)
+
+    class Meta:
+        verbose_name = 'Owner'
+        verbose_name_plural = 'Owners'
+
+    def __str__(self):
+        return self.name
